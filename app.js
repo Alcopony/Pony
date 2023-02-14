@@ -1,4 +1,5 @@
 const express = require('express')
+const {sequelize} = require('./db/models')
 
 const app = express();
 
@@ -9,9 +10,18 @@ app.get('/', (req, res) => {
 });
 
 
-app.listen(PORT, () =>
+app.listen(PORT, async () =>
 {
     console.log('Веб сервер слушает порт', PORT);
+
+    try{
+        await  sequelize.authenticate();
+        console.log('БД-сервер подключён успешно');
+    }catch(err){
+        console.log('БД-сервер не подключён');
+        console.log(err.message)
+    }
+
 });
 
 
